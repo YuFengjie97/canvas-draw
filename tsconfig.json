@@ -9,11 +9,12 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "types": ["node"],
+    "types": ["node", "p5"],
     // "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "noEmit": true,
     "isolatedModules": true,
+    "allowSyntheticDefaultImports": true,
     "strict": true,
     "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": true,

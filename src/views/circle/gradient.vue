@@ -1,8 +1,7 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
-import { divide, matrix, multiply, norm, random, subtract } from 'mathjs'
-import type * as math from 'mathjs'
-import { randomRGB } from '@/utils'
+import { Vector } from 'p5'
+import { random, randomRGB } from '@/utils'
 
 const con = ref<HTMLElement>()
 
@@ -11,13 +10,7 @@ let ctx: CanvasRenderingContext2D | null = null
 
 const circles: Circle[] = []
 
-const mouse: {
-  x: number
-  y: number
-} = {
-  x: 0,
-  y: 0,
-}
+const mouse = new Vector(0, 0)
 
 interface circleOp {
   x: number
@@ -31,10 +24,9 @@ interface circleOp {
 }
 
 class Circle {
-  x: number
-  y: number
+  pos: Vector
   r: number
-  v: math.Matrix
+  v: Vector
   borderColor: string | null
   borderWidth: number | null
   fill: string
@@ -44,8 +36,7 @@ class Circle {
   shadowOffsetY: number
 
   constructor(op: circleOp) {
-    this.x = op.x
-    this.y = op.y
+    this.pos = new Vector(op.x, op.y)
     this.r = op.r
     this.fill = op.fill
     this.borderColor = op.borderColor ?? null
@@ -56,7 +47,7 @@ class Circle {
     this.shadowOffsetX = 0
     this.shadowOffsetY = 0
 
-    this.v = matrix([random(-1, 1), random(-1, 1)])
+    this.v = new Vector(random(-1, 1), random(-1, 1)).mult(1)
 
     this.draw()
   }
@@ -64,7 +55,7 @@ class Circle {
   draw() {
     const c = ctx!
     c.beginPath()
-    c.arc(this.x, this.y, this.r, 0, Math.PI * 2)
+    c.arc(this.pos.x, this.pos.y, this.r, 0, Math.PI * 2)
 
     if (this.borderColor && this.borderWidth) {
       c.lineWidth = this.borderWidth
@@ -86,32 +77,20 @@ class Circle {
   }
 
   update() {
-    const vecMouse = matrix([mouse.x, mouse.y])
-    const vecCenter = matrix([this.x, this.y])
+    this.pos.add(this.v)
 
-    const vec = subtract(vecCenter, vecMouse)
-    const len = norm(vec)
-    const vecNorm = divide(vec, len) as math.Matrix
-    const vecArr = vecNorm.toArray() as number[]
+    const vecPM = this.pos.copy().sub(mouse)
+    vecPM.normalize()
 
-    this.shadowOffsetX = vecArr[0] * this.r * 0.6
-    this.shadowOffsetY = vecArr[1] * this.r * 0.6
+    this.shadowOffsetX = vecPM.x * this.r * 0.6
+    this.shadowOffsetY = vecPM.y * this.r * 0.6
 
-    console.log('-----', this.v)
+    const { clientWidth, clientHeight } = ctx!.canvas
+    if (this.pos.x - this.r <= 0 || this.pos.x + this.r >= clientWidth)
+      this.v.x *= -1
 
-    const r = multiply(this.v, [-1, -1])
-    console.log(this.v, r)
-
-    const vArr = this.v.toArray() as number[]
-    this.x += vArr[0]
-    this.y += vArr[1]
-
-    // const { clientWidth, clientHeight } = ctx!.canvas
-    // if (this.x - this.r <= 0 || this.x + this.r >= clientWidth)
-    //   this.v = multiply(this.v, [-1, 1])
-
-    // if (this.y - this.r <= 0 || this.y + this.r >= clientHeight)
-    //   this.v = multiply(this.v, [1, -1])
+    if (this.pos.y - this.r <= 0 || this.pos.y + this.r >= clientHeight)
+      this.v.y *= -1
   }
 }
 
@@ -171,6 +150,8 @@ onMounted(() => {
   </div>
 </template>
 
-<style lang='less' scoped>
-.view-con{}
+<style lang='less'>
+.p5Canvas {
+  display: none;
+}
 </style>

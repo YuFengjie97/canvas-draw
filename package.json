@@ -11,13 +11,14 @@
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {
-    "mathjs": "^11.11.1",
+    "p5": "^1.7.0",
     "vue": "^3.3.4",
     "vue-router": "4"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^1.0.0-beta.8",
     "@types/node": "^20.6.5",
+    "@types/p5": "^1.7.0",
     "@vitejs/plugin-vue": "^4.2.3",
     "eslint": "^8.50.0",
     "less": "^4.2.0",
