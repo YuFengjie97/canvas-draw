@@ -3,12 +3,14 @@
 
 <template>
   <div class="view-con">
-    <h1 class="bg-white font-italic">
-      home
-    </h1>
+    <RouterLink class="font-size-1.8rem m-40px" to="/circle/gradient">
+      circle-gradient
+    </RouterLink>
   </div>
 </template>
 
 <style lang='less' scoped>
-.view-con{}
+.view-con{
+
+}
 </style>
