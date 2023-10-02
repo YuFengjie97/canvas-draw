@@ -1,3 +1,4 @@
+<!-- 圆，阴影，阴影位置与鼠标位置有互动 -->
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
 import { Vector } from 'p5'
