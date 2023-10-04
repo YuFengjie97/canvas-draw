@@ -10,5 +10,9 @@ export const polygon: RouteRecordRaw[] = [{
       path: 'normal',
       component: () => import('@/views/polygon/normal.vue'),
     },
+    {
+      path: 'bezier',
+      component: () => import('@/views/polygon/bezier.vue'),
+    },
   ],
 }]

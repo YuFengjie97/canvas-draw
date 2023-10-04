@@ -1,11 +1,4 @@
-import p5 from 'p5'
-
-// eslint-disable-next-line new-cap
-export const p5Ins = new p5(() => {}, undefined)
-
-export function random(min?: number, max?: number) {
-  return p5Ins.random(min, max)
-}
+import { random } from './p5'
 
 const { floor } = Math
 

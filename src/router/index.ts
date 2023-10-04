@@ -1,12 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { type App } from 'vue'
-import { basic } from './routes/modules/basic'
-import { circle } from './routes/modules/circle'
-import { polygon } from './routes/modules/polygon'
+import routes from './routes'
 
 export const router = createRouter({
   history: createWebHistory(),
-  routes: [...basic, ...circle, ...polygon],
+  routes,
 })
 
 export function setupRouter(app: App) {
