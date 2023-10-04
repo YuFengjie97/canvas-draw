@@ -15,6 +15,9 @@
     <RouterLink class="font-size-1.8rem p-20px" to="/grid/art">
       grid-art
     </RouterLink>
+    <RouterLink class="font-size-1.8rem p-20px" to="/grid/flow">
+      grid-flow
+    </RouterLink>
   </div>
 </template>
 

@@ -10,5 +10,9 @@ export const grid: RouteRecordRaw[] = [{
       path: 'art',
       component: () => import('@/views/grid/art.vue'),
     },
+    {
+      path: 'flow',
+      component: () => import('@/views/grid/flow.vue'),
+    },
   ],
 }]

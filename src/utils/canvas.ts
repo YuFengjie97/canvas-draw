@@ -19,3 +19,34 @@ export function initCanvas(con: HTMLElement, op: {
   const ctx = canvasEl.getContext('2d')!
   return ctx
 }
+
+export function initFps(con: HTMLElement) {
+  const el = document.createElement('div')
+  el.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: #333;
+    color: #fff;
+    border-radius: 8px;
+    padding: 10px 16px;
+    min-width: 100px;
+  `
+
+  // 使用requestAnimationFrame的方式计算帧数
+  let lastSecondStamp = 0
+  let lastStamp = 0
+  function calFps() {
+    const t = new Date().getTime()
+    const val = Math.floor(1000 / (t - lastStamp))
+    lastStamp = t
+    if (t - lastSecondStamp >= 1000) {
+      el.innerHTML = `FPS: ${val}`
+      lastSecondStamp = t
+    }
+    requestAnimationFrame(calFps)
+  }
+  calFps()
+
+  con.appendChild(el)
+}

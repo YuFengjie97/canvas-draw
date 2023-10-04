@@ -13,6 +13,7 @@
   "dependencies": {
     "nice-color-palettes": "^3.0.0",
     "p5": "^1.7.0",
+    "stats.js": "^0.17.0",
     "vue": "^3.3.4",
     "vue-router": "4"
   },
@@ -20,6 +21,7 @@
     "@antfu/eslint-config": "^1.0.0-beta.8",
     "@types/node": "^20.6.5",
     "@types/p5": "^1.7.0",
+    "@types/stats.js": "^0.17.1",
     "@vitejs/plugin-vue": "^4.2.3",
     "eslint": "^8.50.0",
     "less": "^4.2.0",

@@ -11,6 +11,9 @@ dependencies:
   p5:
     specifier: ^1.7.0
     version: 1.7.0
+  stats.js:
+    specifier: ^0.17.0
+    version: 0.17.0
   vue:
     specifier: ^3.3.4
     version: 3.3.4
@@ -28,6 +31,9 @@ devDependencies:
   '@types/p5':
     specifier: ^1.7.0
     version: 1.7.0
+  '@types/stats.js':
+    specifier: ^0.17.1
+    version: 0.17.1
   '@vitejs/plugin-vue':
     specifier: ^4.2.3
     version: 4.3.4(vite@4.4.9)(vue@3.3.4)
@@ -577,6 +583,10 @@ packages:
 
   /@types/semver@7.5.2:
     resolution: {integrity: sha512-7aqorHYgdNO4DM36stTiGO3DvKoex9TQRwsJU6vMaFGyqpBA1MNZkz+PG3gaNUPpTAOYhT1WR7M1JyA3fbS9Cw==}
+    dev: true
+
+  /@types/stats.js@0.17.1:
+    resolution: {integrity: sha512-OgfYE1x2w1jRUXzzKABX+kOdwz2y9PE0uSwnZabkWfJTWOzm7Pvfm4JI2xqRE0q2nwUe2jZLWcrcnhd9lQU63w==}
     dev: true
 
   /@types/unist@2.0.8:
@@ -2938,6 +2948,10 @@ packages:
   /spdx-license-ids@3.0.15:
     resolution: {integrity: sha512-lpT8hSQp9jAKp9mhtBU4Xjon8LPGBvLIuBiSVhMEtmLecTh2mO0tlqrAMp47tBXzMr13NJMQ2lf7RpQGLJ3HsQ==}
     dev: true
+
+  /stats.js@0.17.0:
+    resolution: {integrity: sha512-hNKz8phvYLPEcRkeG1rsGmV5ChMjKDAWU7/OJJdDErPBNChQXxCo3WZurGpnWc6gZhAzEPFad1aVgyOANH1sMw==}
+    dev: false
 
   /strip-ansi@6.0.1:
     resolution: {integrity: sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==}
