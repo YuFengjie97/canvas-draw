@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
 import { Vector } from 'p5'
-import { noise, random } from '@/utils'
+import { noise } from '@/utils'
 
 const { sin, cos } = Math
 

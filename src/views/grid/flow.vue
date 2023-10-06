@@ -3,7 +3,7 @@ import { Vector } from 'p5'
 import { onMounted, ref } from 'vue'
 import colors from 'nice-color-palettes'
 import Stats from 'stats.js'
-import { lerp, noise, random } from '@/utils/p5'
+import { lerp, noise, random } from '@/utils'
 
 const stats = new Stats()
 document.body.appendChild(stats.dom)

@@ -1,8 +1,7 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
 import colors from 'nice-color-palettes'
-import { initCanvas } from '@/utils/canvas'
-import { lerp, noise, noiseSeed, random, randomSeed } from '@/utils/p5'
+import { initCanvas, lerp, noise, noiseSeed, random, randomSeed } from '@/utils'
 
 const con = ref()
 let ctx: CanvasRenderingContext2D | null = null

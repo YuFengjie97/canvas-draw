@@ -2,7 +2,7 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
 import { Vector } from 'p5'
-import { random, randomRGB } from '@/utils'
+import { randomRGB } from '@/utils'
 
 const con = ref<HTMLElement>()
 
