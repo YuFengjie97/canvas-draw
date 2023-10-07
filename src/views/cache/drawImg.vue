@@ -5,7 +5,7 @@ import Stats from 'stats.js'
 import { getBufferCanvas, initCanvas, random, randomRGB } from '@/utils'
 
 const con = ref<HTMLElement>()
-const particleCount = 1000
+const particleCount = 10
 const stats = new Stats()
 document.body.append(stats.dom)
 
@@ -58,7 +58,7 @@ onMounted(() => {
   }
   function animate() {
     stats.update()
-    ctx.fillStyle = 'rgba(0,0,0,0.3)'
+    ctx.fillStyle = 'rgba(100,100,0,0.3)'
     ctx.fillRect(0, 0, width, height)
     // ctx.clearRect(0, 0, width, height)
     particles.forEach((p) => {

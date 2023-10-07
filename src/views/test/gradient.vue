@@ -27,6 +27,12 @@ onMounted(() => {
     ctx.fillStyle = 'red'
     ctx.arc(x, y, 4, 0, Math.PI * 2)
     ctx.fill()
+
+    ctx.moveTo(100, 100)
+    ctx.lineTo(100, 140)
+    ctx.moveTo(200, 200)
+    ctx.lineTo(200, 240)
+    ctx.stroke()
   })
 
   function animate(cb: () => void) {
