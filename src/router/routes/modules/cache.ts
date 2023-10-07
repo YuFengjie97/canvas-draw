@@ -10,5 +10,9 @@ export const cache: RouteRecordRaw[] = [{
       path: '',
       component: () => import('@/views/cache/index.vue'),
     },
+    {
+      path: 'drawImg',
+      component: () => import('@/views/cache/drawImg.vue'),
+    },
   ],
 }]
