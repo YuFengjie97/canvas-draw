@@ -11,8 +11,11 @@ document.body.appendChild(stats.dom)
 const con = ref<HTMLElement>()
 const canvas = ref<HTMLCanvasElement>()
 const cellSize = 30
-const palettes = random(colors)
-const showArrow = true
+// const palettes = random(colors)
+// ['#a3a948', '#edb92e', '#f85931', '#ce1836', '#009989']
+const palettes = ['#a3a948', '#edb92e', '#f85931', '#ce1836', '#009989']
+
+const showArrow = false
 const particleCount = 1000
 
 onMounted(() => {
@@ -81,10 +84,10 @@ onMounted(() => {
     }
 
     update() {
-      this.xOff += 0.0005
-      this.yOff += 0.0005
+      this.xOff += 0.005
+      this.yOff += 0.005
       const n = noise(this.xOff, this.yOff)
-      this.a = lerp(0, Math.PI * 7, n)
+      this.a = lerp(0, Math.PI * 4, n)
       this.vel = Vector.fromAngle(this.a, lerp(1, 10, n))
     }
   }
@@ -93,8 +96,10 @@ onMounted(() => {
     pos = new Vector(0, 0)
     vel = new Vector(0, 0)
     color = '#000'
-    r = 1
-    r_cur = 0
+    r = 0
+    r_tar = 1
+    pos_last = new Vector(0, 0)
+    tailLen = 4
     constructor() {
       const { pos, vel } = this.getRandom()
       this.color = random(palettes)
@@ -104,11 +109,17 @@ onMounted(() => {
     }
 
     draw() {
-      const c = ctx as CanvasRenderingContext2D
-      c.beginPath()
-      c.fillStyle = this.color
-      c.arc(this.pos.x, this.pos.y, this.r_cur, 0, Math.PI * 2)
-      c.fill()
+      ctx.beginPath()
+      ctx.fillStyle = this.color
+      ctx.arc(this.pos.x, this.pos.y, this.r, 0, Math.PI * 2)
+      ctx.fill()
+
+      ctx.beginPath()
+      ctx.moveTo(this.pos.x, this.pos.y)
+      ctx.lineTo(this.pos_last.x, this.pos_last.y)
+      ctx.lineWidth = this.r
+      ctx.strokeStyle = this.color
+      ctx.stroke()
     }
 
     update(vel: Vector) {
@@ -116,21 +127,23 @@ onMounted(() => {
         this.reSet()
       }
       else {
-        this.vel.set(vel)
+        this.vel.add(vel)
+        this.pos_last.set(this.pos)
         this.pos.add(this.vel)
       }
-      if (this.r_cur <= this.r)
-        this.r_cur += 0.1
+      if (this.r <= this.r_tar)
+        this.r += 0.1
     }
 
     reSet() {
       const { pos, vel } = this.getRandom()
       this.pos.set(pos)
+      this.pos_last.set(pos)
       this.vel.set(vel)
 
       this.color = palettes[Math.floor(palettes.length * random())]
-      this.r = Math.floor(random(1, 6))
-      this.r_cur = 0
+      this.r_tar = Math.floor(random(1, 3))
+      this.r = 0
     }
 
     getRandom() {
@@ -178,7 +191,7 @@ onMounted(() => {
         const cellInd = Math.floor(pos.y / cellSize) * cols + Math.floor(pos.x / cellSize)
 
         const cell = cells[cellInd]
-        p.update(cell.vel)
+        p.update(cell.vel.copy().mult(0.01))
         p.draw()
       }
     })
@@ -187,17 +200,17 @@ onMounted(() => {
   function animate() {
     stats.update()
 
-    // ctx!.fillStyle = '#fff'
-    // ctx!.fillStyle = 'rgba(100,100,100,0.2)'
-    // ctx!.fillRect(0, 0, width, height)
-    ctx!.clearRect(0, 0, width, height)
+    ctx.fillStyle = 'rgba(45, 52, 54,0.8)'
+    ctx!.fillRect(0, 0, width, height)
 
     updateCells()
+
     updateParticles()
 
     requestAnimationFrame(animate)
   }
 
+  ctx.lineCap = ctx.lineJoin = 'round'
   initCells()
   initParticles()
   animate()
@@ -218,5 +231,6 @@ canvas{
   display: block;
   box-shadow: 0 0 4px #333;
   background: #333;
+  color: rgb(45, 52, 54);
 }
 </style>
