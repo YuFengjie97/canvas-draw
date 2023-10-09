@@ -9,7 +9,7 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "types": ["node", "p5", "stats.js"],
+    "types": ["node", "p5", "stats.js", "dat.gui"],
     // "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "noEmit": true,
