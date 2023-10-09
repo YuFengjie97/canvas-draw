@@ -25,6 +25,7 @@ let isSimplex = true
 let xInc = 0.001
 let yInc = 0.001
 let zInc = 0.01
+let isGlow = false
 
 const ui = {
   hueBase,
@@ -36,6 +37,7 @@ const ui = {
   xInc,
   yInc,
   zInc,
+  isGlow,
 }
 
 onMounted(() => {
@@ -77,6 +79,8 @@ onMounted(() => {
     const panel = new dat.GUI({ width: 300 })
     panel.add(ui, 'hueBase', 1, 360, 1).onChange(val => hueBase = val)
     panel.add(ui, 'hueRange', 1, 360, 1).onChange(val => hueRange = val)
+    panel.add(ui, 'isGlow').onChange(val => isGlow = val)
+
     panel.add(ui, 'isSimplex').name('Simplex3/Perlin3').onChange(val => isSimplex = val)
     panel.add(ui, 'cellSize', 10, 60, 1).onChange((val) => {
       cellSize = val
@@ -114,7 +118,15 @@ onMounted(() => {
       ctx.beginPath()
       ctx.moveTo(this.pos.x, this.pos.y)
       ctx.lineTo(this.end.x, this.end.y)
-      ctx.strokeStyle = this.getColor()
+      const { hsl, grad } = this.getColor()
+      ctx.strokeStyle = grad
+      if (isGlow) {
+        ctx.shadowColor = hsl
+        ctx.shadowBlur = lineWidth / 2
+      }
+      else {
+        ctx.shadowBlur = 0
+      }
       ctx.stroke()
     }
 
@@ -124,7 +136,10 @@ onMounted(() => {
       const grad = ctx.createLinearGradient(this.pos.x, this.pos.y, this.end.x, this.end.y)
       grad.addColorStop(0, `hsla(${this.hue}, 100%, 50%, 0)`)
       grad.addColorStop(1, `hsla(${this.hue}, 100%, 50%, 1)`)
-      return grad
+      return {
+        hsl: `hsla(${this.hue}, 100%, 50%, 1)`,
+        grad,
+      }
     }
 
     getNoiseXYZ() {
