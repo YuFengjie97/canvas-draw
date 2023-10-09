@@ -45,8 +45,8 @@ onMounted(() => {
         width: cellSize,
         height: cellSize,
       })
-      this.xOff = map(x, 0, 1, 0, width)
-      this.yOff = map(y, 0, 1, 0, height)
+      this.xOff = map(x, 0, width, 0, 1)
+      this.yOff = map(y, 0, height, 0, 1)
 
       this.pos.set(x, y)
       this.cache()

@@ -9,12 +9,13 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "types": ["node", "p5"],
+    "types": ["node", "p5", "stats.js"],
     // "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "noEmit": true,
     "isolatedModules": true,
     "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
     "strict": true,
     "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": true,

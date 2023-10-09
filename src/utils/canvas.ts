@@ -11,6 +11,7 @@ export function initCanvas(con: HTMLElement, op: {
   con.appendChild(canvasEl)
 
   canvasEl.style.cssText = `
+    display: block;
     width: ${op.width}px;
     height: ${op.height}px;
     box-shadow: 0 0 6px #333;

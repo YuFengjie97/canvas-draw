@@ -26,6 +26,6 @@ export function noiseSeed(seed: number) {
   return p5Ins.noiseSeed(seed)
 }
 
-export function lerp(start: number, stop: number, amt: number) {
-  return p5Ins.lerp(start, stop, amt)
-}
+// export function lerp(start: number, stop: number, amt: number) {
+//   return p5Ins.lerp(start, stop, amt)
+// }

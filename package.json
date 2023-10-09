@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "nice-color-palettes": "^3.0.0",
+    "noisejs": "^2.1.0",
     "p5": "^1.7.0",
     "pixi.js": "^7.3.1",
     "stats.js": "^0.17.0",

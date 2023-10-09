@@ -8,6 +8,9 @@ dependencies:
   nice-color-palettes:
     specifier: ^3.0.0
     version: 3.0.0
+  noisejs:
+    specifier: ^2.1.0
+    version: 2.1.0
   p5:
     specifier: ^1.7.0
     version: 1.7.0
@@ -2920,6 +2923,10 @@ packages:
   /node-fetch-native@1.4.0:
     resolution: {integrity: sha512-F5kfEj95kX8tkDhUCYdV8dg3/8Olx/94zB8+ZNthFs6Bz31UpUi8Xh40TN3thLwXgrwXry1pEg9lJ++tLWTcqA==}
     dev: true
+
+  /noisejs@2.1.0:
+    resolution: {integrity: sha512-sw39KaUS2YBta6apZ0/H+nnCsUyxT/ZRxgv/HnDxx6pWO2e2nUmWgLhpOaQdlxxkFepIpxDrlXy3fHVx0S3SLg==}
+    dev: false
 
   /normalize-package-data@2.5.0:
     resolution: {integrity: sha512-/5CMN3T0R4XTj4DcGaexo+roZSdSFW/0AOOTROrjxzCG1wrWXEsGbRKevjlIL+ZDE4sZlJr5ED4YW0yqmkK+eA==}
