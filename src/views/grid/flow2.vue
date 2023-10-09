@@ -79,10 +79,10 @@ onMounted(() => {
     const panel = new dat.GUI({ width: 300 })
     panel.add(ui, 'hueBase', 1, 360, 1).onChange(val => hueBase = val)
     panel.add(ui, 'hueRange', 1, 360, 1).onChange(val => hueRange = val)
-    panel.add(ui, 'isGlow').onChange(val => isGlow = val)
+    panel.add(ui, 'isGlow').name('isGlow(laggy)').onChange(val => isGlow = val)
 
     panel.add(ui, 'isSimplex').name('Simplex3/Perlin3').onChange(val => isSimplex = val)
-    panel.add(ui, 'cellSize', 10, 60, 1).onChange((val) => {
+    panel.add(ui, 'cellSize', 10, 60, 1).name('cellSize(careful)').onChange((val) => {
       cellSize = val
       cells.length = 0
       rows = Math.ceil(height / cellSize)
