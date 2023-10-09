@@ -5,7 +5,7 @@ import { Vector } from 'p5'
 import * as dat from 'dat.gui'
 
 import { Noise } from 'noisejs'
-import { map } from '@/utils'
+import { getBufferCanvas, map } from '@/utils'
 
 const con = ref<HTMLElement>()
 const canvas = ref<HTMLCanvasElement>()
@@ -19,6 +19,7 @@ let lineLen = lineWidth * 10
 let width = 0
 let height = 0
 let ctx: CanvasRenderingContext2D
+let bufferCtx: CanvasRenderingContext2D
 let rows = 0
 let cols = 0
 let isSimplex = true
@@ -45,6 +46,10 @@ onMounted(() => {
     const { width: w, height: h } = con.value!.getBoundingClientRect()
     width = w
     height = h
+    bufferCtx = getBufferCanvas({
+      width,
+      height,
+    })
 
     canvas.value!.width = w
     canvas.value!.height = h
@@ -52,8 +57,8 @@ onMounted(() => {
     rows = Math.ceil(h / cellSize)
     cols = Math.ceil(w / cellSize)
 
-    ctx.lineCap = 'round'
-    ctx.lineWidth = lineWidth
+    bufferCtx.lineCap = 'round'
+    bufferCtx.lineWidth = lineWidth
   }
   init()
 
@@ -115,25 +120,25 @@ onMounted(() => {
     }
 
     draw() {
-      ctx.beginPath()
-      ctx.moveTo(this.pos.x, this.pos.y)
-      ctx.lineTo(this.end.x, this.end.y)
+      bufferCtx.beginPath()
+      bufferCtx.moveTo(this.pos.x, this.pos.y)
+      bufferCtx.lineTo(this.end.x, this.end.y)
       const { hsl, grad } = this.getColor()
-      ctx.strokeStyle = grad
+      bufferCtx.strokeStyle = grad
       if (isGlow) {
-        ctx.shadowColor = hsl
-        ctx.shadowBlur = lineWidth / 2
+        bufferCtx.shadowColor = hsl
+        bufferCtx.shadowBlur = lineWidth / 2
       }
       else {
-        ctx.shadowBlur = 0
+        bufferCtx.shadowBlur = 0
       }
-      ctx.stroke()
+      bufferCtx.stroke()
     }
 
     getColor() {
       this.hue = Math.floor(map(this.getNoiseXYZ(), -1, 1, hueBase - hueRange, hueBase + hueRange))
 
-      const grad = ctx.createLinearGradient(this.pos.x, this.pos.y, this.end.x, this.end.y)
+      const grad = bufferCtx.createLinearGradient(this.pos.x, this.pos.y, this.end.x, this.end.y)
       grad.addColorStop(0, `hsla(${this.hue}, 100%, 50%, 0)`)
       grad.addColorStop(1, `hsla(${this.hue}, 100%, 50%, 1)`)
       return {
@@ -168,16 +173,21 @@ onMounted(() => {
     }
   }
 
+  const bgFillStyle = 'rgba(0,0,0,1)'
   function animate() {
     stats.update()
 
-    ctx.clearRect(0, 0, width, height)
-    ctx.fillStyle = 'rgba(0,0,0,1)'
+    ctx.fillStyle = bgFillStyle
     ctx.fillRect(0, 0, width, height)
+    bufferCtx.fillStyle = bgFillStyle
+    bufferCtx.fillRect(0, 0, width, height)
+
     cells.forEach((c) => {
       c.update()
       c.draw()
     })
+
+    ctx.drawImage(bufferCtx.canvas, 0, 0)
 
     requestAnimationFrame(animate)
   }
