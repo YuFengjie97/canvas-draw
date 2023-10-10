@@ -4,8 +4,10 @@ import Stats from 'stats.js'
 import { Vector } from 'p5'
 import * as dat from 'dat.gui'
 
-import { Noise } from 'noisejs'
+import { createNoise3D } from 'simplex-noise'
 import { map } from '@/utils'
+
+const noise3D = createNoise3D()
 
 const con = ref<HTMLElement>()
 const canvas = ref<HTMLCanvasElement>()
@@ -21,10 +23,9 @@ let height = 0
 let ctx: CanvasRenderingContext2D
 let rows = 0
 let cols = 0
-let isSimplex = true
 let xInc = 0.001
 let yInc = 0.001
-let zInc = 0.01
+let zInc = 0.004
 let isGlow = false
 
 const ui = {
@@ -33,7 +34,6 @@ const ui = {
   lineWidth,
   cellSize,
   lineLen,
-  isSimplex,
   xInc,
   yInc,
   zInc,
@@ -58,7 +58,6 @@ onMounted(() => {
   init()
 
   const cells: Cell[] = []
-  const noise = new Noise(Math.floor(Math.random() * 10000))
 
   function windowResize() {
     let timer: null | NodeJS.Timeout = null
@@ -81,7 +80,6 @@ onMounted(() => {
     panel.add(ui, 'hueRange', 1, 360, 1).onChange(val => hueRange = val)
     panel.add(ui, 'isGlow').name('isGlow(laggy)').onChange(val => isGlow = val)
 
-    panel.add(ui, 'isSimplex').name('Simplex3/Perlin3').onChange(val => isSimplex = val)
     panel.add(ui, 'cellSize', 10, 60, 1).name('cellSize(careful)').onChange((val) => {
       cellSize = val
       cells.length = 0
@@ -96,7 +94,7 @@ onMounted(() => {
     panel.add(ui, 'lineLen', 1, 200, 1).onChange(val => lineLen = val)
     panel.add(ui, 'xInc', 0.001, 0.01, 0.001).onChange(val => xInc = val)
     panel.add(ui, 'yInc', 0.001, 0.01, 0.001).onChange(val => yInc = val)
-    panel.add(ui, 'zInc', 0.01, 0.1, 0.01).onChange(val => zInc = val)
+    panel.add(ui, 'zInc', 0.001, 0.01, 0.001).onChange(val => zInc = val)
   }
   initUi()
 
@@ -109,9 +107,9 @@ onMounted(() => {
     zOff = 0
     constructor(pos: Vector) {
       this.pos = pos
-      this.xOff = pos.x * 0.001
-      this.yOff = pos.y * 0.001
-      this.zOff = this.xOff + this.yOff
+      this.xOff = map(pos.x, 0, width, 0, 1)
+      this.yOff = map(pos.y, 0, width, 0, 1)
+      this.zOff = map(Math.sqrt(this.xOff + this.yOff), 0, 2, 0, 1)
     }
 
     draw() {
@@ -143,10 +141,7 @@ onMounted(() => {
     }
 
     getNoiseXYZ() {
-      if (isSimplex)
-        return noise.simplex3(this.xOff, this.yOff, this.zOff)
-
-      return noise.perlin3(this.xOff, this.yOff, this.zOff)
+      return noise3D(this.xOff, this.yOff, this.zOff)
     }
 
     update() {
