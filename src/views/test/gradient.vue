@@ -1,37 +1,34 @@
 <script lang="ts" setup>
+import { Vector } from 'p5'
 import { onMounted, ref } from 'vue'
+import { random } from '@/utils'
 
 const canvas = ref<HTMLCanvasElement>()
 
+let canvasX = 0
+let canvasY = 0
+const mouse = { x: 0, y: 0 }
+function mousemove(e: Event) {
+  mouse.x = e.clientX - canvasX
+  mouse.y = e.clientY - canvasY
+}
+
 onMounted(() => {
   const ctx = canvas.value!.getContext('2d') as CanvasRenderingContext2D
+  const { x, y } = canvas.value!.getBoundingClientRect()
+  canvasX = x
+  canvasY = y
 
-  const grad = ctx.createRadialGradient(200, 200, 0, 200, 200, 200)
-  grad.addColorStop(0, 'rgba(0,0,0,0)')
-  grad.addColorStop(0.25, 'rgba(0,0,0,0.25)')
-  grad.addColorStop(0.5, 'rgba(0,0,0,0.5)')
-  grad.addColorStop(0.75, 'rgba(0,0,0,0.75)')
+  const s = new Vector(200, 200)
+  const e = new Vector(200, 200)
 
-  let x = 0
-  let y = 0
+  const c = new Vector(random(400), random(400))
 
   animate(() => {
-    ctx.fillStyle = '#00b894'
-    ctx.fillRect(0, 0, 400, 400)
-    ctx.fillStyle = grad
-    ctx.fillRect(0, 0, 400, 400)
-
-    x += 1
-    y += 10
+    ctx.clearRect(0, 0, 400, 400)
     ctx.beginPath()
-    ctx.fillStyle = 'red'
-    ctx.arc(x, y, 4, 0, Math.PI * 2)
-    ctx.fill()
-
-    ctx.moveTo(100, 100)
-    ctx.lineTo(100, 140)
-    ctx.moveTo(200, 200)
-    ctx.lineTo(200, 240)
+    ctx.moveTo(s.x, s.y)
+    ctx.bezierCurveTo(c.x, c.y, c.x, c.y, mouse.x, mouse.y)
     ctx.stroke()
   })
 
@@ -44,7 +41,7 @@ onMounted(() => {
 
 <template>
   <div class="w-full h-100vh grid place-items-center">
-    <canvas ref="canvas" width="400" height="400" class="w-400px h-400px" />
+    <canvas ref="canvas" width="400" height="400" class="w-400px h-400px" @mousemove="mousemove" />
   </div>
 </template>
 

@@ -10,5 +10,9 @@ export const circle: RouteRecordRaw[] = [{
       path: 'gradient',
       component: () => import('@/views/circle/gradient.vue'),
     },
+    {
+      path: 'grow',
+      component: () => import('@/views/circle/grow.vue'),
+    },
   ],
 }]
