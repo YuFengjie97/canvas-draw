@@ -15,7 +15,7 @@ const center = new Vector(width / 2, height / 2)
 const TP = Math.PI * 2
 const canvas = ref<HTMLCanvasElement>()
 let t = 0
-const tInc = 3
+let tInc = 3
 
 onMounted(() => {
   canvas.value!.width = width
@@ -99,15 +99,19 @@ onMounted(() => {
       ctx.strokeStyle = this.color
       ctx.stroke(this.path)
 
-      // 绘制完路径，去绘制叶节点
-      if (tt >= this.len) {
-        // 叶子节点的生长速度，因为我需要一个不断累积的变化，这里只有tt，而tt跟len有关
-        // 可以理解成叶子生长完毕用时为该路径的1/4时间
-        const raf = map((tt - this.len) * 0.5, 0, this.len / 4, 0, 1)
+      // 叶子节点的生长速度，因为我需要一个不断累积的变化，这里只有tt，而tt跟len有关
+      // 可以理解成叶子生长完毕用时为该路径的1/4时间
+      // tt在0-this.len这段时间在绘制路径，在this.len-rafMax这段时间在绘制叶子
+      const rafMax = this.len / 4
+      const leaf = this.cArr[this.cArr.length - 1]
+      const raf = map((tt - this.len), 0, rafMax, 0, 1)
+      leaf.draw(raf)
 
-        const leaf = this.cArr[this.cArr.length - 1]
-        leaf.draw(raf)
-      }
+      // 这里返回值true/false指的是是否在绘制
+      if (tt <= this.len + rafMax && t > 0)
+        return true
+      else
+        return false
     }
   }
 
@@ -117,16 +121,12 @@ onMounted(() => {
    * @param r 要判断的circle的r
    */
   function cval(pos: Vector, r: number) {
+    // 由于这个越界的判断，会使得最后的总体形状像一个圆
     if (Vector.dist(pos, center) + r > width / 2)
       return false
 
     for (let i = 0; i < circles.length; i++) {
       const rExp = r + circles[i].r
-      // if (xDist > rExp)
-      //   continue
-      // if (yDist > rExp)
-      //   continue
-
       if ((Vector.dist(pos, circles[i].pos)) < rExp)
         return false
       else continue
@@ -158,6 +158,7 @@ onMounted(() => {
    * 创造一些范围内并互不重叠的节点
    */
   function initCircles() {
+    circles.length = 0
     circles.push(new Circle(new Vector(width / 2, height / 2), new Vector(width / 2, height / 2), 10, '#fff'))
 
     const count = 4000
@@ -188,6 +189,7 @@ onMounted(() => {
    * 查找叶子节点，递归得到路径
    */
   function initCurves() {
+    curves.length = 0
     const strokeStyle = `hsla(${mFloor(random(360))},100%, 50%, 0.5)`
 
     circles.forEach((c) => {
@@ -210,23 +212,59 @@ onMounted(() => {
     ctx.fillStyle = 'rgb(0,0,0)'
     ctx.fillRect(0, 0, width, height)
 
+    let grown = 0
     curves.forEach((c) => {
-      c.draw()
+      if (c.draw())
+        grown++
     })
 
     ctx.beginPath()
     ctx.fillStyle = '#eee'
     ctx.arc(center.x, center.y, 5, 0, TP)
     ctx.fill()
+
+    return grown !== 0 // 表示目前是否有路径在绘制
   }
 
+  let stop = true
+
   function animate() {
-    t += tInc
     stats.update()
-    draw()
-    requestAnimationFrame(animate)
+
+    if (!stop) {
+      // 默认一开始，circle 生长
+      t += tInc
+      const isDraw = draw()
+
+      // !isDraw代表绘制完毕的后，t经过累加此时大于0，开始回撤萎缩
+      if (!isDraw && t > 0) {
+        tInc = -8
+      }
+      // 不断萎缩使得t越来越小，最终<=0再重新开始绘制
+      else if (!isDraw && t <= 0) {
+        initCircles()
+        initCurves()
+        tInc = 3
+      }
+
+      requestAnimationFrame(animate)
+    }
   }
-  animate()
+
+  function start() {
+    if (stop) {
+      stop = false
+      animate()
+    }
+    else {
+      stop = true
+    }
+  }
+
+  start()
+  canvas.value?.addEventListener('click', () => {
+    start()
+  })
 })
 </script>
 
