@@ -5,7 +5,8 @@ import { grid } from './modules/grid'
 import { test } from './modules/test'
 import { cache } from './modules/cache'
 import { pixi } from './modules/pixi'
+import { picture } from './modules/picture'
 
-const routes = [...basic, ...circle, ...polygon, ...grid, ...test, ...cache, ...pixi]
+const routes = [...basic, ...circle, ...polygon, ...grid, ...test, ...cache, ...pixi, ...picture]
 
 export default routes
