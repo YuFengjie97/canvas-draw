@@ -73,6 +73,11 @@ export function insertSort(arr: number[]) {
   }
 }
 
+/**
+ * File: quick_sort.ts
+ * Created Time: 2022-12-12
+ * Author: Justin (xiefahit@gmail.com)
+ */
 function partition(nums: number[], left: number, right: number): number {
   // 以 nums[left] 作为基准数
   let i = left
@@ -89,7 +94,6 @@ function partition(nums: number[], left: number, right: number): number {
   swap(nums, i, left) // 将基准数交换至两子数组的分界线
   return i // 返回基准数的索引
 }
-
 export function quickSort(nums: number[], left: number, right: number): void {
   // 子数组长度为 1 时终止
   while (left < right) {
@@ -107,6 +111,11 @@ export function quickSort(nums: number[], left: number, right: number): void {
   }
 }
 
+/**
+ * File: merge_sort.ts
+ * Created Time: 2022-12-12
+ * Author: Justin (xiefahit@gmail.com)
+ */
 /* 合并左子数组和右子数组 */
 // 左子数组区间 [left, mid]
 // 右子数组区间 [mid + 1, right]
