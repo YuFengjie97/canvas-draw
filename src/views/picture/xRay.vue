@@ -2,12 +2,12 @@
 import { onMounted, ref } from 'vue'
 import { Vector } from 'p5'
 import { initCanvas } from '@/utils'
-import img from '@/assets/img/xRay/1.jpg'
-import imgReal from '@/assets/img/xRay/1_copy.jpg'
+import hand from '@/assets/img/xRay/hand-xray-flesh.jpg'
+import hand_xray from '@/assets/img/xRay/hand-xray-bone.jpg'
 
 const con = ref<HTMLElement>()
-const width = 600
-const height = 600
+const width = 800
+const height = 400
 const mouse = new Vector(300, 300)
 
 function loadImg(url: string): Promise<HTMLImageElement> {
@@ -18,16 +18,32 @@ function loadImg(url: string): Promise<HTMLImageElement> {
   })
 }
 
+function getD(img: HTMLImageElement) {
+  const { width: imgW, height: imgH } = img
+  const scale = Math.max(width / imgW, height / imgH)
+  return {
+    dx: imgW * scale,
+    dy: imgH * scale,
+  }
+}
+
 onMounted(async () => {
   const ctx = initCanvas(con.value!, {
     width,
     height,
   })
   const { x, y } = ctx.canvas.getBoundingClientRect()
-  const imgObj = await loadImg(img)
-  const imgObjReal = await loadImg(imgReal)
-  ctx.lineWidth = 20
-  ctx.strokeStyle = '#000'
+
+  const img = await loadImg(hand)
+  const imgXray = await loadImg(hand_xray)
+
+  const { dx, dy } = getD(img)
+
+  const xRadius = 100 // x-ray radius
+  const lineWidth = 8
+
+  ctx.lineWidth = lineWidth
+  ctx.strokeStyle = 'red'
   ctx.canvas.addEventListener('mousemove', (e) => {
     const { clientX, clientY } = e
     mouse.set(clientX - x, clientY - y)
@@ -37,15 +53,15 @@ onMounted(async () => {
     ctx.clearRect(0, 0, width, height)
 
     ctx.save()
-    ctx.drawImage(imgObj, 0, 0)
+    ctx.drawImage(img, 0, 0, dx, dy)
 
     const path = new Path2D()
-    path.arc(mouse.x, mouse.y, 200, 0, Math.PI * 2)
+    path.arc(mouse.x, mouse.y, xRadius, 0, Math.PI * 2)
     ctx.clip(path)
 
-    ctx.drawImage(imgObjReal, 0, 0)
+    ctx.drawImage(imgXray, 0, 0, dx, dy)
     ctx.beginPath()
-    ctx.arc(mouse.x, mouse.y, 190, 0, Math.PI * 2)
+    ctx.arc(mouse.x, mouse.y, xRadius - lineWidth / 2, 0, Math.PI * 2)
     ctx.stroke()
     ctx.restore()
     requestAnimationFrame(animate)

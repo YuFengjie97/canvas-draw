@@ -6,7 +6,8 @@ import { test } from './modules/test'
 import { cache } from './modules/cache'
 import { pixi } from './modules/pixi'
 import { picture } from './modules/picture'
+import { sort } from './modules/sort'
 
-const routes = [...basic, ...circle, ...polygon, ...grid, ...test, ...cache, ...pixi, ...picture]
+const routes = [...sort, ...basic, ...circle, ...polygon, ...grid, ...test, ...cache, ...pixi, ...picture]
 
 export default routes
