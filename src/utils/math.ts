@@ -12,14 +12,21 @@ const { floor } = Math
  * @returns v映射到t1到t2的值
  */
 export function map(v: number, s1: number, s2: number, t1: number, t2: number) {
-  if (v < s1)
+  if (v <= s1)
     return t1
-  if (v > s2)
+  if (v >= s2)
     return t2
 
   return (v - s1) / (s2 - s1) * (t2 - t1) + t1
 }
 
+/**
+ *
+ * @param start 变化最小
+ * @param end 变化最大
+ * @param amt 变化值
+ * @returns 0到1
+ */
 export function lerp(start: number, end: number, amt: number) {
   return map(amt, 0, 1, start, end)
 }

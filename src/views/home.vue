@@ -15,8 +15,8 @@ routes.forEach((r) => {
 </script>
 
 <template>
-  <div class="flex flex-wrap">
-    <RouterLink v-for="(item, i) in routeLinks" :key="i" class="font-size-1.8rem p-20px" :to="item">
+  <div class="flex flex-col flex-wrap">
+    <RouterLink v-for="(item, i) in routeLinks" :key="i" class="font-size-0.8rem p-10px" :to="item">
       {{ item }}
     </RouterLink>
   </div>

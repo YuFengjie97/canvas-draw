@@ -19,18 +19,17 @@ onMounted(() => {
   canvasX = x
   canvasY = y
 
-  const s = new Vector(200, 200)
-  const e = new Vector(200, 200)
+  ctx.moveTo(0, 0)
+  ctx.bezierCurveTo(10, 10, 20, 20, 30, 30)
+  ctx.strokeStyle = 'blue'
+  ctx.stroke()
 
-  const c = new Vector(random(400), random(400))
-
-  animate(() => {
-    ctx.clearRect(0, 0, 400, 400)
-    ctx.beginPath()
-    ctx.moveTo(s.x, s.y)
-    ctx.bezierCurveTo(c.x, c.y, c.x, c.y, mouse.x, mouse.y)
-    ctx.stroke()
-  })
+  ctx.clearRect(0, 0, 400, 400)
+  // ctx.beginPath()
+  ctx.moveTo(30, 30)
+  ctx.strokeStyle = 'red'
+  ctx.bezierCurveTo(40, 40, 100, 150, 60, 60)
+  ctx.stroke()
 
   function animate(cb: () => void) {
     cb()
