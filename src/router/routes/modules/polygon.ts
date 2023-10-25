@@ -22,5 +22,9 @@ export const polygon: RouteRecordRaw[] = [{
       path: 'ink',
       component: () => import('@/views/polygon/ink.vue'),
     },
+    {
+      path: 'lines',
+      component: () => import('@/views/polygon/lines.vue'),
+    },
   ],
 }]
