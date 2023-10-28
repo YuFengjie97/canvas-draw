@@ -19,10 +19,10 @@ const noise2D = createNoise2D()
 let t = 0
 
 const lenRang = [4, 15] // 单段闪电长度范围
-const levelMax = 2 // 闪电分支最大层
-const growProb = 0.5 // 闪电会产生分支的概率
+const levelMax = 8 // 闪电分支最大层
+const growProb = 0.08 // 闪电会产生分支的概率
 const lineWidthRange = [2, 6]
-const pointNumRange = [30, 50] // 雷电生成节点数量范围
+const pointNumRange = [50, 100] // 雷电生成节点数量范围
 type BranchType = 'l' | 'm' | 'r'
 // 闪电延申角度范围
 const angleRange: {
@@ -70,7 +70,7 @@ onMounted(() => {
       this.hue = parent ? parent.hue : mfloor(random(360))
       this.level = parent ? parent.level + 1 : 1
       this.parent = parent
-      this.pointNum = parent ? mfloor(parent.pointNum / this.level) : mfloor(random(pointNumRange[0], pointNumRange[1]))
+      this.pointNum = parent ? mfloor(random(parent.pointNum / this.level)) : mfloor(random(pointNumRange[0], pointNumRange[1]))
       this.lineWidth = parent ? parent.lineWidth / this.level : random(lineWidthRange[0], lineWidthRange[1])
       this.tOff = random(100, 400)
       // 分支闪电继承节点
@@ -89,12 +89,13 @@ onMounted(() => {
         this.points.push(p)
         this.length += len
 
-        // 是否生成子分支雷电
-        if (this.level < levelMax && random() < growProb / this.level) {
+        // 是否生成子分支雷电,小分支的雷电更容易生成
+        const prob = this.level < 3 ? (growProb / this.level) : (growProb * this.level)
+        if (this.level < levelMax && random() < prob) {
           const child = new Thunder(this, 'l')
           this.childs.push(child)
         }
-        if (this.level < levelMax && random() < growProb / this.level) {
+        if (this.level < levelMax && random() < prob) {
           const child = new Thunder(this, 'r')
           this.childs.push(child)
         }
@@ -110,8 +111,10 @@ onMounted(() => {
       ctx.moveTo(this.points[0].x, this.points[0].y)
 
       ctx.lineWidth = this.lineWidth
-      // ctx.shadowColor = `hsla(${this.hue},100%,50%,0.8)`
-      // ctx.shadowBlur = this.lineWidth * 2
+      if (this.level < 3) {
+        ctx.shadowColor = `hsla(${this.hue},100%,50%,0.8)`
+        ctx.shadowBlur = this.lineWidth / 2
+      }
 
       for (let i = 1; i < this.points.length; i++)
         ctx.lineTo(this.points[i].x, this.points[i].y)
@@ -136,7 +139,7 @@ onMounted(() => {
   })
 
   function animate() {
-    t += 10
+    t += 30
     stats.update()
     if (thunder !== null)
       thunder.draw()
