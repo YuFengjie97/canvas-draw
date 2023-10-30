@@ -71,7 +71,7 @@ onMounted(() => {
     }
   }
 
-  class Electricty {
+  class Electricity {
     lines: Line[] = []
     constructor(hue: number, lineWidth: number) {
       for (let i = 0; i < lineNum; i++) {
@@ -93,8 +93,8 @@ onMounted(() => {
     }
   }
 
-  // const elec = new Electricty(186, 20)
-  const elec = new Electricty(frandom(360), 20)
+  // const elec = new Electricity(186, 20)
+  const elec = new Electricity(frandom(360), 20)
 
   ;(function animate() {
     ctx.fillStyle = '#000'
