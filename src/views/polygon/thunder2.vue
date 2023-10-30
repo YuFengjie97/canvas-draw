@@ -93,7 +93,8 @@ onMounted(() => {
     }
   }
 
-  const elec = new Electricty(186, 20)
+  // const elec = new Electricty(186, 20)
+  const elec = new Electricty(frandom(360), 20)
 
   ;(function animate() {
     ctx.fillStyle = '#000'
